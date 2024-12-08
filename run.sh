@@ -1,0 +1,1 @@
+./bin/cppgomoku/pure_mcts_game c c

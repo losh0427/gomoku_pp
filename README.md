@@ -1,7 +1,3 @@
-以下是補充和完善語句後的 `README.md` 文件內容：
-
----
-
 # gomoku_pp
 #### pp24_final ####
 

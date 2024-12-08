@@ -54,6 +54,55 @@ namespace gomoku
         void setSilent() {silent = true; search_tree.setSilent();}
         void unsetSilent() {silent = false; search_tree.unsetSilent();}
     };
+    
+    // pp part 
+    class Ppc1_MCTSPlayer : public Player {
+    private:
+        bool silent;
+        Ppc1_MonteCarloSearchTree search_tree;
+    public:
+        Ppc1_MCTSPlayer(int color, std::string name="Ppc1_MCTSPlayer", float weight_c=10, 
+                       int compute_budget=1E4, bool silent=false);
+        ~Ppc1_MCTSPlayer(){}
+        void reset() {search_tree.reset();}
+        int getAction(Board &board);
+        std::string PlayerInfo();
+        void setSilent() {silent = true; search_tree.setSilent();}
+        void unsetSilent() {silent = false; search_tree.unsetSilent();}
+    };
+
+    class Ppc2_MCTSPlayer : public Player {
+    private:
+        bool silent;
+        Ppc2_MonteCarloSearchTree search_tree;
+    public:
+        Ppc2_MCTSPlayer(int color, std::string name="Ppc2_MCTSPlayer", float weight_c=10, 
+                       int compute_budget=1E4, bool silent=false);
+        ~Ppc2_MCTSPlayer(){}
+        void reset() {search_tree.reset();}
+        int getAction(Board &board);
+        std::string PlayerInfo();
+        void setSilent() {silent = true; search_tree.setSilent();}
+        void unsetSilent() {silent = false; search_tree.unsetSilent();}
+    };
+    class Ppc3_MCTSPlayer : public Player {
+    private:
+        bool silent;
+        Ppc3_MonteCarloSearchTree search_tree;
+    public:
+        Ppc3_MCTSPlayer(int color, std::string name="Ppc3_MCTSPlayer", float weight_c=10, 
+                       int compute_budget=1E4, bool silent=false);
+        ~Ppc3_MCTSPlayer(){}
+        void reset() {search_tree.reset();}
+        int getAction(Board &board);
+        std::string PlayerInfo();
+        void setSilent() {silent = true; search_tree.setSilent();}
+        void unsetSilent() {silent = false; search_tree.unsetSilent();}
+    };
+    
+
+
+    
 } // gomoku
 
 #endif // GOMUKU_PLAYER_H

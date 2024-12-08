@@ -3,91 +3,8 @@
 
 namespace gomoku
 {
-    MCTSTreeNode::MCTSTreeNode(MCTSTreeNode* parent, float prior_prob) {
-        this->parent = parent; 
-        visit_times = 0;
-        Q_value = 0.0;
-        U_value = 0.0;
-        probability = prior_prob;
-    }
-    
-    MCTSTreeNode::~MCTSTreeNode() {
-        kill();
-    }
-
-    void MCTSTreeNode::kill() {
-        if (isLeaf()) return;
-        for (auto &p : children) {
-            delete p.second;
-        }
-    }
-
-    MCTSTreeNode * MCTSTreeNode::leaveOneChild(int move) {
-        if (children.find(move) == children.end()) return nullptr;
-        if (isLeaf()) return nullptr;
-        for (auto &p : children) {
-            if (p.first != move) {
-                delete p.second;
-            }
-        }
-        MCTSTreeNode *child = children[move];
-        child->parent = nullptr;
-        children.clear();
-        return child;
-    }
-
-    void MCTSTreeNode::expand(const std::vector<MoveProbPair> &policy) {
-        for (MoveProbPair p: policy) {
-            if (children.find(p.move) == children.end()) {
-                MCTSTreeNode *new_child = new MCTSTreeNode(this, p.prob);
-                children.insert(std::make_pair(p.move, new_child));
-            }
-        }
-    }
-
-    void MCTSTreeNode::expand(std::vector<MoveProbPair> &&policy) {
-        for (MoveProbPair p: policy) {
-            if (children.find(p.move) == children.end()) {
-                MCTSTreeNode *new_child = new MCTSTreeNode(this, p.prob);
-                children.insert(std::make_pair(p.move, new_child));
-            }
-        }
-    }
-
-    void MCTSTreeNode::backPropagation(const float bp_value) {
-        update(bp_value);
-        if (!isRoot())
-            parent->backPropagation(-bp_value);
-    }
-
-    float MCTSTreeNode::evaluate(float weight_c) {
-        // if(parent->visit_times == 11) 
-        //     printf("\n");
-        U_value = probability * std::sqrt(parent->visit_times) / (1 + visit_times);
-        return Q_value + weight_c * U_value;
-    }
-
-    void MCTSTreeNode::update(float bp_value) {
-        ++visit_times;
-        Q_value += ((bp_value - Q_value) / visit_times);
-    }
-    MCTSTreeNode * MCTSTreeNode::select(float weight_c, int &action) {
-        action = (*children.begin()).first;
-        MCTSTreeNode *max_child = (*children.begin()).second;
-        float max_evaluate_value = (*children.begin()).second->evaluate(weight_c);
-        for (auto p : children) {
-            float curr_evaluate_value = p.second->evaluate(weight_c);
-            if (curr_evaluate_value > max_evaluate_value) {
-                max_evaluate_value = curr_evaluate_value;
-                max_child = p.second;
-                action = p.first;
-            }
-        }
-        return max_child;
-    }
-
-
-    PureMonteCarloSearchTree::PureMonteCarloSearchTree(float weight_c, int compute_budget,
+    // ppc1 part
+    Ppc1_MonteCarloSearchTree::Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget,
                                                        int expand_bound, bool silent, int rollout_limit,
                                                        expandFunc *expand_fn, rolloutFunc *rollout_fn) {
         root = new MCTSTreeNode(nullptr, 1.0);
@@ -100,13 +17,13 @@ namespace gomoku
         this->rollout_func = rollout_fn;
     }
 
-    void PureMonteCarloSearchTree::reset() {
+    void Ppc1_MonteCarloSearchTree::reset() {
         root->kill();
         delete root;
         root = new MCTSTreeNode(nullptr, 1.0);
     }
 
-    float PureMonteCarloSearchTree::evaluateRollout(Board &board, int limit) {
+    float Ppc1_MonteCarloSearchTree::evaluateRollout(Board &board, int limit) {
         int player_color = board.currentPlayerColor();
         int i, winner_color;
         for (i=0; i<limit; ++i) {
@@ -124,7 +41,7 @@ namespace gomoku
         else return (winner_color == player_color) ? 1.0 : -1.0;
     }
 
-    void PureMonteCarloSearchTree::playout(Board &s) {
+    void Ppc1_MonteCarloSearchTree::playout(Board &s) {
         MCTSTreeNode *curr_node = root;
         while (true) { // first find a leaf node use UCB
             if (curr_node->isLeaf()) break; // if leaf or single root.
@@ -148,7 +65,7 @@ namespace gomoku
         curr_node->backPropagation(-bp_value);
     }
 
-    int PureMonteCarloSearchTree::getMove(Board &s, float exploration_level) {
+    int Ppc1_MonteCarloSearchTree::getMove(Board &s, float exploration_level) {
         // the first move is at the center of board
         if (s.isEmpty()) return (s.getHeight() * s.getWidth()) / 2;
 
@@ -198,7 +115,7 @@ namespace gomoku
         return return_move;
     }
 
-    void PureMonteCarloSearchTree::updateWithMove(int last_move) {
+    void Ppc1_MonteCarloSearchTree::updateWithMove(int last_move) {
         if (last_move == Board::kPlayerEmpty) return;
         if (root->children.find(last_move) != root->children.end()) {
             MCTSTreeNode * next_root = root->leaveOneChild(last_move);
@@ -209,6 +126,5 @@ namespace gomoku
             root = new MCTSTreeNode(nullptr, 1.0);
         }
     }
-
 
 } // gomoku

@@ -83,6 +83,96 @@ namespace gomoku
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
     };
+
+    // pp part
+    class Ppc1_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
+    private:
+        MCTSTreeNode * root;
+        float weight_c;
+        int compute_budget;
+        bool silent;
+        int expand_bound;
+        int rollout_limit;
+        expandFunc *expand_func;
+        rolloutFunc *rollout_func;
+    
+    public:
+        Ppc1_MonteCarloSearchTree(){}
+        Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, 
+                                 int expand_bound, bool silent, 
+                                 int rollout_limit, expandFunc *expand_fn,
+                                 rolloutFunc *rollout_fn);
+        ~Ppc1_MonteCarloSearchTree() {delete root;}
+        void reset();
+        float evaluateRollout(Board &board, int limit);
+        void playout(Board &s);
+        int getMove(Board &s, float exploration_level=1);
+        void updateWithMove(int last_move);
+        MCTSTreeNode * getRoot() {return root;}
+        void setSilent() {silent = true;}
+        void unsetSilent() {silent = false;}
+        int getComputeBudget() {return compute_budget;}
+    };
+    class Ppc2_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
+    private:
+        MCTSTreeNode * root;
+        float weight_c;
+        int compute_budget;
+        bool silent;
+        int expand_bound;
+        int rollout_limit;
+        expandFunc *expand_func;
+        rolloutFunc *rollout_func;
+    
+    public:
+        Ppc2_MonteCarloSearchTree(){}
+        Ppc2_MonteCarloSearchTree(float weight_c, int compute_budget, 
+                                 int expand_bound, bool silent, 
+                                 int rollout_limit, expandFunc *expand_fn,
+                                 rolloutFunc *rollout_fn);
+        ~Ppc2_MonteCarloSearchTree() {delete root;}
+        void reset();
+        float evaluateRollout(Board &board, int limit);
+        void playout(Board &s);
+        int getMove(Board &s, float exploration_level=1);
+        void updateWithMove(int last_move);
+        MCTSTreeNode * getRoot() {return root;}
+        void setSilent() {silent = true;}
+        void unsetSilent() {silent = false;}
+        int getComputeBudget() {return compute_budget;}
+    };
+    class Ppc3_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
+    private:
+        MCTSTreeNode * root;
+        float weight_c;
+        int compute_budget;
+        bool silent;
+        int expand_bound;
+        int rollout_limit;
+        expandFunc *expand_func;
+        rolloutFunc *rollout_func;
+    
+    public:
+        Ppc3_MonteCarloSearchTree(){}
+        Ppc3_MonteCarloSearchTree(float weight_c, int compute_budget, 
+                                 int expand_bound, bool silent, 
+                                 int rollout_limit, expandFunc *expand_fn,
+                                 rolloutFunc *rollout_fn);
+        ~Ppc3_MonteCarloSearchTree() {delete root;}
+        void reset();
+        float evaluateRollout(Board &board, int limit);
+        void playout(Board &s);
+        int getMove(Board &s, float exploration_level=1);
+        void updateWithMove(int last_move);
+        MCTSTreeNode * getRoot() {return root;}
+        void setSilent() {silent = true;}
+        void unsetSilent() {silent = false;}
+        int getComputeBudget() {return compute_budget;}
+    };
+
+
+
+
 } // gomoku
 
 

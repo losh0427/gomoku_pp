@@ -140,4 +140,162 @@ namespace gomoku
         player_info += "\n\n";
         return player_info;
     }
+
+    // ppc1 part
+    Ppc1_MCTSPlayer::Ppc1_MCTSPlayer(int color, std::string name, float weight_c, 
+                                   int compute_budget, bool silent)
+    :Player(color, name), 
+    search_tree(Ppc1_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+                                         silent, 1000, MCTS_Expand_policy_fn,
+                                         rollout_policy_fn)) {
+        this->silent = silent;
+    }
+
+    int Ppc1_MCTSPlayer::getAction(Board &b) {
+        // check color
+        if (b.currentPlayerColor() != color) {
+            throw std::runtime_error("The color of next move in board "
+                                     "is not the same color of current player.\n");
+        }
+
+        // update the MCST with last move, because we only use 
+        // Ppc1_MCTSPlayer to play with others, not itself.
+        printf("Update with move\n");
+        search_tree.updateWithMove(b.lastMove());
+        printf("get move\n");
+        // get next move
+        int next_move = search_tree.getMove(b);
+        search_tree.updateWithMove(next_move);
+        return next_move;
+    }
+
+    std::string Ppc1_MCTSPlayer::PlayerInfo() {
+        std::string color_info;
+        switch (color) {
+            case Board::kPlayerBlack:
+                color_info = "Black[@]\n";
+                break;
+            case Board::kPlayerWhite:
+                color_info = "White[O]\n";
+                break;
+            default:
+                color_info = "None[+]\n";
+        }
+
+        std::string player_info = "-----\n[--Player Information--]\nName: ";
+        player_info += name;
+        player_info += "\nColor: ";
+        player_info += color_info;
+        player_info += "Compute Budget: ";
+        player_info += std::to_string(search_tree.getComputeBudget());
+        player_info += "\n\n";
+        return player_info;
+    }
+    // ppc2 part
+    Ppc2_MCTSPlayer::Ppc2_MCTSPlayer(int color, std::string name, float weight_c, 
+                                   int compute_budget, bool silent)
+    :Player(color, name), 
+    search_tree(Ppc2_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+                                         silent, 1000, MCTS_Expand_policy_fn,
+                                         rollout_policy_fn)) {
+        this->silent = silent;
+    }
+
+    int Ppc2_MCTSPlayer::getAction(Board &b) {
+        // check color
+        if (b.currentPlayerColor() != color) {
+            throw std::runtime_error("The color of next move in board "
+                                     "is not the same color of current player.\n");
+        }
+
+        // update the MCST with last move, because we only use 
+        // Ppc2_MCTSPlayer to play with others, not itself.
+        printf("Update with move\n");
+        search_tree.updateWithMove(b.lastMove());
+        printf("get move\n");
+        // get next move
+        int next_move = search_tree.getMove(b);
+        search_tree.updateWithMove(next_move);
+        return next_move;
+    }
+
+    std::string Ppc2_MCTSPlayer::PlayerInfo() {
+        std::string color_info;
+        switch (color) {
+            case Board::kPlayerBlack:
+                color_info = "Black[@]\n";
+                break;
+            case Board::kPlayerWhite:
+                color_info = "White[O]\n";
+                break;
+            default:
+                color_info = "None[+]\n";
+        }
+
+        std::string player_info = "-----\n[--Player Information--]\nName: ";
+        player_info += name;
+        player_info += "\nColor: ";
+        player_info += color_info;
+        player_info += "Compute Budget: ";
+        player_info += std::to_string(search_tree.getComputeBudget());
+        player_info += "\n\n";
+        return player_info;
+    }
+    // ppc3 part
+    Ppc3_MCTSPlayer::Ppc3_MCTSPlayer(int color, std::string name, float weight_c, 
+                                   int compute_budget, bool silent)
+    :Player(color, name), 
+    search_tree(Ppc3_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+                                         silent, 1000, MCTS_Expand_policy_fn,
+                                         rollout_policy_fn)) {
+        this->silent = silent;
+    }
+
+    int Ppc3_MCTSPlayer::getAction(Board &b) {
+        // check color
+        if (b.currentPlayerColor() != color) {
+            throw std::runtime_error("The color of next move in board "
+                                     "is not the same color of current player.\n");
+        }
+
+        // update the MCST with last move, because we only use 
+        // Ppc3_MCTSPlayer to play with others, not itself.
+        printf("Update with move\n");
+        search_tree.updateWithMove(b.lastMove());
+        printf("get move\n");
+        // get next move
+        int next_move = search_tree.getMove(b);
+        search_tree.updateWithMove(next_move);
+        return next_move;
+    }
+
+    std::string Ppc3_MCTSPlayer::PlayerInfo() {
+        std::string color_info;
+        switch (color) {
+            case Board::kPlayerBlack:
+                color_info = "Black[@]\n";
+                break;
+            case Board::kPlayerWhite:
+                color_info = "White[O]\n";
+                break;
+            default:
+                color_info = "None[+]\n";
+        }
+
+        std::string player_info = "-----\n[--Player Information--]\nName: ";
+        player_info += name;
+        player_info += "\nColor: ";
+        player_info += color_info;
+        player_info += "Compute Budget: ";
+        player_info += std::to_string(search_tree.getComputeBudget());
+        player_info += "\n\n";
+        return player_info;
+    }
+    
+
+
+
+
+
+
 } // gomoku

@@ -2,21 +2,25 @@
 #include "cppgomoku/player.h"
 #include "cppgomoku/board.h"
 #include "cppgomoku/game_server.h"
-
+using namespace std;
 using namespace gomoku;
 
-bool define_player(Player *&p, char type, int color) {
-    switch (type) {
-            case 'h': 
-                p = new HumanPlayer(color, "Human Player"); 
-                break;
-            case 'c':
-                p = new PureMCTSPlayer(color, "Pure MCTS player", 10.0, 80000); 
-                break;
-            default:
-                printf("Wrong type parameter for player, expect \'h\' or \'c\'\n");
-                return false;
-        }
+bool define_player(Player *&p, string& type, int color) {
+    // human player : "h", computer player : "c", pp1 : "p1", pp2 : "p2", pp3 : "p3"
+    if (type == "p1") {
+        p = new Ppc1_MCTSPlayer(color, "Ppc1 MCTS player", 10.0, 80000); 
+    } else if (type == "p2") {
+        p = new Ppc2_MCTSPlayer(color, "Ppc2 MCTS player", 10.0, 80000); 
+    } else if (type == "p3") {
+        p = new Ppc3_MCTSPlayer(color, "Ppc3 MCTS player", 10.0, 80000); 
+    } else if (type == "h") {
+        p = new HumanPlayer(color, "Human Player", 'S');
+    } else if (type == "c") {
+        p = new PureMCTSPlayer(color, "Pure MCTS player", 10.0, 80000); 
+    } else {
+        printf("Invalid player type: %s\n", type.c_str());
+        return false;
+    }
     return true;
 }
 
@@ -28,8 +32,8 @@ int main(int argc, char *argv[]) {
         printf("At least two parameters!\n");
         return 0;
     } 
-    char player1_type = argv[1][0];
-    char player2_type = argv[2][0];
+    string player1_type = argv[1];
+    string player2_type = argv[2];
     Player *player1;
     Player *player2;
 

@@ -11,6 +11,12 @@
 #include "cppgomoku/board.h"
 #include "cppgomoku/policy_functions.h"
 
+#ifndef TIME_FUNC
+#define TIME_FUNC
+#include <sys/time.h>
+extern double getTimeStamp();
+#endif
+
 namespace gomoku
 {
     typedef decltype(MCTS_Expand_policy_fn) expandFunc;

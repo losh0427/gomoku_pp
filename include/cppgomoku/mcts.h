@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <memory>
 #include <limits>
+#include <omp.h>
 #include "cppgomoku/common.h"
 #if DEBUG == 1
 #include <algorithm>
@@ -112,6 +113,7 @@ namespace gomoku
         void reset();
         float evaluateRollout(Board &board, int limit);
         void playout(Board &s);
+        void playoutLocal(Board &s, MCTSTreeNode *local_root);
         int getMove(Board &s, float exploration_level=1);
         void updateWithMove(int last_move);
         MCTSTreeNode * getRoot() {return root;}

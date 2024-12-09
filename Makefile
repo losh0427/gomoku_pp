@@ -23,13 +23,13 @@ all: $(BIN_DIR)/$(PROJECT_NAME)/$(TARGET)
 
 $(BIN_DIR)/$(PROJECT_NAME)/$(TARGET):$(OBJS)
 	mkdir -p $(BIN_DIR)/$(PROJECT_NAME)
-	$(CXX) -O3 -o $@ $^
+	$(CXX) -O3 -fopenmp -o $@ $^
 
 build_obj_dir:
 	mkdir -p $(OBJ_DIR)/$(PROJECT_NAME)
 
 $(OBJ_DIR)/$(PROJECT_NAME)/%.o:%.cpp build_obj_dir
-	$(CXX) -O3 $(INC) -c -o $@ $<
+	$(CXX) -O3 -fopenmp $(INC) -c -o $@ $<
 
 .PHONY : clean
 

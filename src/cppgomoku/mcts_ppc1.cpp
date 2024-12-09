@@ -1,8 +1,23 @@
 #include "cppgomoku/mcts.h"
-
+// bool checked = false;
 
 namespace gomoku
 {
+    MCTSTreeNode *copyTree(const MCTSTreeNode *src) {
+        MCTSTreeNode *new_node = new MCTSTreeNode(nullptr, src->probability);
+        new_node->Q_value = src->Q_value;
+        new_node->visit_times = src->visit_times;
+        new_node->U_value = src->U_value;
+
+        for(auto &kv: src->children) {
+            MCTSTreeNode *child_copy = copyTree(kv.second);
+            child_copy->parent = new_node;
+            new_node->children.insert({kv.first, kv.second});
+        }
+
+        return new_node;
+    }
+
     // ppc1 part
     Ppc1_MonteCarloSearchTree::Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget,
                                                        int expand_bound, bool silent, int rollout_limit,
@@ -50,6 +65,32 @@ namespace gomoku
             curr_node = curr_node->select(weight_c, next_action);
             s.play(next_action);
         }
+        
+
+        // check game is end
+        int winner_color;
+        bool is_end = s.gameEnd(winner_color);
+
+        // if game not over and this node's visit_times beyonds the bound.
+        if (!is_end && curr_node->visit_times >= expand_bound) {
+            curr_node->expand((*expand_func)(s));
+        }
+
+        // evaluate this "leaf(expanded before)" node。
+        float bp_value = evaluateRollout(s, rollout_limit);
+        curr_node->backPropagation(-bp_value);
+    }
+
+    void Ppc1_MonteCarloSearchTree::playoutLocal(Board &s, MCTSTreeNode *local_root) {
+        MCTSTreeNode *curr_node = local_root;
+        while (true) { // first find a leaf node use UCB
+            if (curr_node->isLeaf()) break; // if leaf or single root.
+            
+            int next_action;
+            curr_node = curr_node->select(weight_c, next_action);
+            s.play(next_action);
+        }
+        
 
         // check game is end
         int winner_color;
@@ -72,49 +113,90 @@ namespace gomoku
         if (!silent) printf("Thinking...\n");
         
         double think_start = getTimeStamp();
-        for (int i=0;i<compute_budget;++i) {
-            Board board_for_search(s);
-            playout(board_for_search);
+
+        int num_threads = 4;
+        int local_budget = compute_budget / num_threads;
+        std::vector<MCTSTreeNode*> local_roots(num_threads, nullptr);
+
+        #pragma omp parallel num_threads(num_threads)
+        {
+            int tid = omp_get_thread_num();
+            MCTSTreeNode *local_root = copyTree(root);
+
+            Board local_board(s);
+            for (int i = 0; i < compute_budget; ++i) {
+                Board board_for_search(local_board);
+                playoutLocal(board_for_search, local_root);
+            }
+
+            local_roots[tid] = local_root;
+            // printf("tid %d children size: %d\n", tid, local_root->children.size());
         }
+        // for (int i=0;i<compute_budget;++i) {
+        //     Board board_for_search(s);
+        //     playout(board_for_search);
+        // }
         double think_end = getTimeStamp();
+        printf("Thinking time: %f\n", think_end - think_start);
 
         if (DEBUG) {
-            printf("Thinking time: %f\n", think_end - think_start);
             std::vector<MoveProbPair> debug_output_vec;
-            for (auto i: root->children) {
-                MoveProbPair p(i.first, i.second->Q_value);
-                debug_output_vec.push_back(p);
-            }
+            for(auto lr: local_roots)
+                for (auto i: lr->children) {
+                    MoveProbPair p(i.first, i.second->Q_value);
+                    debug_output_vec.push_back(p);
+                }
 
             std::sort(debug_output_vec.begin(), debug_output_vec.end(),
                      [](const MoveProbPair &p1, const MoveProbPair &p2)
                      {return p1.prob > p2.prob;});
 
-            printf("[--DEBUG OUT--]\nMove probabilities:");
+            printf("[--DEBUG OUT--]\nMove probabilities %d:", debug_output_vec.size());
             for (auto mpp: debug_output_vec) {
                 printf("(Move: %d, Value: %f), ", mpp.move, mpp.prob);
             }
             printf("\n");
         }
 
-        // float max_Q_values = root->children.begin()->second->Q_value;
-        // int return_move = root->children.begin()->first;
+        std::unordered_map<int, int> aggregated_visit_times;
+        std::unordered_set<int> all_moves;
+        for(int i = 0; i < local_roots.size(); ++i) {
+            for(auto &child_pair: local_roots[i]->children) {
+                all_moves.insert(child_pair.first);
+            }
+        }
+
+        int max_visit_times = -1;
+        int return_move = -1;
+        for(int move: all_moves) {
+            int sum_visit_times = 0;
+            for(auto lr: local_roots) {
+                auto it = lr->children.find(move);
+                if(it != lr->children.end()) {
+                    sum_visit_times += it->second->visit_times;
+                }
+            }
+            aggregated_visit_times[move] = sum_visit_times;
+            if(sum_visit_times > max_visit_times) {
+                max_visit_times = sum_visit_times;
+                return_move = move;
+            }
+        }
+
+
+        // int max_visit_times = -1;
+        // int return_move = -1;
         // for(auto i: root->children) {
-        //     if (i.second->Q_value > max_Q_values) {
-        //         max_Q_values = i.second->Q_value;
+        //     if (i.second->visit_times > max_visit_times) {
+        //         max_visit_times = i.second->visit_times;
         //         return_move = i.first;
         //     }
         // }
-        int max_visit_times = root->children.begin()->second->visit_times;
-        int return_move = root->children.begin()->first;
-        for(auto i: root->children) {
-            if (i.second->visit_times > max_visit_times) {
-                max_visit_times = i.second->visit_times;
-                return_move = i.first;
-            }
-        }
         if (DEBUG) {
             printf("Next Move: %d, Value: %d\n", return_move, max_visit_times);
+        }
+        for(auto &lr: local_roots) {
+            delete lr;
         }
         return return_move;
     }

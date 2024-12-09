@@ -158,10 +158,13 @@ namespace gomoku
         if (s.isEmpty()) return (s.getHeight() * s.getWidth()) / 2;
 
         if (!silent) printf("Thinking...\n");
+        double think_start = getTimeStamp();
         for (int i=0;i<compute_budget;++i) {
             Board board_for_search(s);
             playout(board_for_search);
         }
+        double think_end = getTimeStamp();
+        printf("Thinking time: %f\n", think_end - think_start);
 
         if (DEBUG) {
             std::vector<MoveProbPair> debug_output_vec;

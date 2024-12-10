@@ -17,7 +17,7 @@ namespace gomoku
         GameServer(Board *board, Player *p1, Player *p2, bool silent);
         ~GameServer(){}
         void showGameInfo();
-        int startGame(); //return the color of winner.
+        int startGame(int mode, int flag); //return the color of winner.
     };
 } // gomoku
 

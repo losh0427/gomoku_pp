@@ -292,4 +292,5 @@ namespace gomoku
         return mMoved.empty();
     }
 
+
 } // gomoku

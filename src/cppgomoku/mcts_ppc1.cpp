@@ -1,5 +1,6 @@
 #include "cppgomoku/mcts.h"
 // bool checked = false;
+#include "cppgomoku/common.h"
 
 namespace gomoku
 {

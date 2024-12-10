@@ -1,4 +1,5 @@
 #include "cppgomoku/mcts.h"
+#include "cppgomoku/common.h"
 
 extern double getTimeStamp() {
     struct timeval tv;

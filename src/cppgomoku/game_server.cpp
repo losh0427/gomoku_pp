@@ -27,15 +27,17 @@ namespace gomoku
         board->printBoard();
     }
 
-    int GameServer::startGame() {
-        board->initBoard(player1->getColor());
+    int GameServer::startGame(int mode = 1, int flag = 0) {
+        if (mode != 3){
+            board->initBoard(player1->getColor());  
+        }
         Player * color_to_player[2];
         color_to_player[player1->getColor()] = player1;
         color_to_player[player2->getColor()] = player2;
 
         if (!silent) showGameInfo();
 
-        int next_move, winner_color;
+        int next_move, winner_color = Board::kPlayerEmpty;
         while (true) {
             Player *current_player = color_to_player[board->currentPlayerColor()];
             printf("Before get action\n");
@@ -46,6 +48,12 @@ namespace gomoku
                 throw std::runtime_error("Invalid move!");
             }
             board->play(next_move);
+            // [debug]show mMoved
+            std::vector<int> moves = board->getmMoved();
+            for (int i = 0; i < moves.size(); ++i) {
+                printf("%d ", moves[i]);
+            }
+            printf("\n");
 
             if (!silent) showGameInfo();
             bool is_end = board->gameEnd(winner_color);
@@ -58,6 +66,8 @@ namespace gomoku
                     else 
                         printf("Game end with no winner.\n");
                 }
+                return winner_color;
+            }else if (mode == 3 && flag == 0) {
                 return winner_color;
             }
         }

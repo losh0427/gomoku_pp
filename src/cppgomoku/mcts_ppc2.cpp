@@ -1,5 +1,5 @@
 #include "cppgomoku/mcts.h"
-
+#include "cppgomoku/common.h"
 
 namespace gomoku
 {

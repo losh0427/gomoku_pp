@@ -61,6 +61,7 @@ namespace gomoku {
         bool isEmpty();
         static int opponentColor(int color);
         static char stone(int color);
+        std::vector<int> getmMoved() {return mMoved;}
     };
 } // end of namespace gomoku
 #endif // CPPGOMOKU_BOARD_H

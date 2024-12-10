@@ -8,7 +8,7 @@
 #include <random>
 #include <cmath>
 
-#define DEBUG 1
+#define DEBUG 0
 
 namespace gomoku
 {

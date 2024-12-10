@@ -16,7 +16,7 @@ bool define_player(Player *&p, string& type, int color) {
     } else if (type == "h") {
         p = new HumanPlayer(color, "Human Player", 'S');
     } else if (type == "c") {
-        p = new PureMCTSPlayer(color, "Pure MCTS player", 10.0, 80000); 
+        p = new PureMCTSPlayer(color, "Pure MCTS player", 10.0, 80000, 5.0); 
     } else {
         printf("Invalid player type: %s\n", type.c_str());
         return false;

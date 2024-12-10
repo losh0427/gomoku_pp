@@ -46,7 +46,7 @@ namespace gomoku
         PureMonteCarloSearchTree search_tree;
     public:
         PureMCTSPlayer(int color, std::string name="Pure MCTS player", float weight_c=10, 
-                       int compute_budget=1E4, bool silent=false);
+                       int compute_budget=1E4, float time_budget = 5.0,bool silent=false);
         ~PureMCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);

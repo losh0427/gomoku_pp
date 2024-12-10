@@ -32,9 +32,9 @@ There are several types of players supported in the game:
   A player controlled through manual input.
 - **c**: Pure MCTS Player  
   A computer player that uses the Monte Carlo Tree Search (MCTS) algorithm without parallelization.
-- **p1**: Pthread MCTS Player  
+- **p1**: OpenMP MCTS Player  
   A computer player leveraging POSIX threads (pthreads) to parallelize the MCTS algorithm.
-- **p2**: OpenMP MCTS Player  
+- **p2**: Pthread MCTS Player  
   A computer player utilizing OpenMP to achieve parallelized MCTS computations.
 - **p3**: MPI MCTS Player  
   A computer player designed for distributed computing, using MPI (Message Passing Interface) to run MCTS across multiple processes.

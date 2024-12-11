@@ -113,9 +113,9 @@ namespace gomoku
         if (s.isEmpty()) return (s.getHeight() * s.getWidth()) / 2;
 
         if (!silent) printf("PPC1 Thinking...\n");
-        cpu_set_t cpu_set;
-        sched_getaffinity(0, sizeof(cpu_set), &cpu_set);
-        printf("%d cpus availale\n", CPU_COUNT(&cpu_set));
+        // cpu_set_t cpu_set;
+        // sched_getaffinity(0, sizeof(cpu_set), &cpu_set);
+        // printf("%d cpus availale\n", CPU_COUNT(&cpu_set));
 
         int num_threads = 2;
         std::vector<MCTSTreeNode*> local_roots(num_threads, nullptr);

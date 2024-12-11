@@ -62,7 +62,7 @@ namespace gomoku
         Ppc1_MonteCarloSearchTree search_tree;
     public:
         Ppc1_MCTSPlayer(int color, std::string name="Ppc1_MCTSPlayer", float weight_c=10, 
-                       int compute_budget=1E4, bool silent=false);
+                       int compute_budget=1E4, double time_budget = 5.0, bool silent=false);
         ~Ppc1_MCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);

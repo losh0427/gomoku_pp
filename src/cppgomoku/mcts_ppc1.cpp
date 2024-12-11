@@ -20,12 +20,13 @@ namespace gomoku
     }
 
     // ppc1 part
-    Ppc1_MonteCarloSearchTree::Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget,
+    Ppc1_MonteCarloSearchTree::Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget,
                                                        int expand_bound, bool silent, int rollout_limit,
                                                        expandFunc *expand_fn, rolloutFunc *rollout_fn) {
         root = new MCTSTreeNode(nullptr, 1.0);
         this->weight_c = weight_c;
         this->compute_budget = compute_budget;
+        this->time_budget = time_budget;
         this->silent = silent;
         this->expand_bound = expand_bound;
         this->rollout_limit = rollout_limit;
@@ -111,26 +112,43 @@ namespace gomoku
         // the first move is at the center of board
         if (s.isEmpty()) return (s.getHeight() * s.getWidth()) / 2;
 
-        if (!silent) printf("Thinking...\n");
-        
-        double think_start = getTimeStamp();
+        if (!silent) printf("PPC1 Thinking...\n");
+        cpu_set_t cpu_set;
+        sched_getaffinity(0, sizeof(cpu_set), &cpu_set);
+        printf("%d cpus availale\n", CPU_COUNT(&cpu_set));
 
-        int num_threads = 4;
-        int local_budget = compute_budget / num_threads;
+        int num_threads = 2;
         std::vector<MCTSTreeNode*> local_roots(num_threads, nullptr);
+        int avg_iter = 0;
 
+        double think_start = getTimeStamp();
         #pragma omp parallel num_threads(num_threads)
         {
             int tid = omp_get_thread_num();
             MCTSTreeNode *local_root = copyTree(root);
-
             Board local_board(s);
-            for (int i = 0; i < compute_budget; ++i) {
+
+            // for (int i = 0; i < compute_budget; ++i) {
+            //     Board board_for_search(local_board);
+            //     playoutLocal(board_for_search, local_root);
+            // }
+            double local_start = getTimeStamp();
+            double local_end = local_start;
+            int iter = 0;
+            while((local_end - local_start) < time_budget) {
                 Board board_for_search(local_board);
                 playoutLocal(board_for_search, local_root);
+                local_end = getTimeStamp();
+                ++iter;
             }
 
             local_roots[tid] = local_root;
+
+            #pragma omp critical
+            {
+                printf("tid %d iteration: %d\n", tid, iter);
+                avg_iter += iter;
+            }
             // printf("tid %d children size: %d\n", tid, local_root->children.size());
         }
         // for (int i=0;i<compute_budget;++i) {
@@ -138,7 +156,9 @@ namespace gomoku
         //     playout(board_for_search);
         // }
         double think_end = getTimeStamp();
-        printf("Thinking time: %f\n", think_end - think_start);
+        avg_iter /= num_threads;
+        printf("PPC1 Thinking time: %f\n", think_end - think_start);
+        printf("PPC1 Iteration count(average): %d\n", avg_iter);
 
         if (DEBUG) {
             std::vector<MoveProbPair> debug_output_vec;

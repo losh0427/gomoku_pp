@@ -10,7 +10,7 @@ using namespace gomoku;
 bool define_player(Player *&p, string& type, int color, double time_budget = 1.0) {
     // human player : "h", computer player : "c", pp1 : "p1", pp2 : "p2", pp3 : "p3"
     if (type == "p1") {
-        p = new Ppc1_MCTSPlayer(color, "Ppc1 MCTS player", 10.0, 80000); 
+        p = new Ppc1_MCTSPlayer(color, "Ppc1 MCTS player", 10.0, 80000, time_budget); 
     } else if (type == "p2") {
         p = new Ppc2_MCTSPlayer(color, "Ppc2 MCTS player", 10.0, 80000); 
     } else if (type == "p3") {

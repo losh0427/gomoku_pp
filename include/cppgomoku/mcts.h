@@ -98,6 +98,7 @@ namespace gomoku
         MCTSTreeNode * root;
         float weight_c;
         int compute_budget;
+        double time_budget;
         bool silent;
         int expand_bound;
         int rollout_limit;
@@ -106,7 +107,7 @@ namespace gomoku
     
     public:
         Ppc1_MonteCarloSearchTree(){}
-        Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, 
+        Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget,
                                  int expand_bound, bool silent, 
                                  int rollout_limit, expandFunc *expand_fn,
                                  rolloutFunc *rollout_fn);

@@ -1,7 +1,7 @@
 #!/bin/bash
 make clean
 make
-./bin/cppgomoku/pure_mcts_game 1 c c
+./bin/cppgomoku/pure_mcts_game 1 c p1
 
 ## mode 2:
 ## ./exe 2 [player1] [player2] [iter_time]

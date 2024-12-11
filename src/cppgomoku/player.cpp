@@ -143,9 +143,9 @@ namespace gomoku
 
     // ppc1 part
     Ppc1_MCTSPlayer::Ppc1_MCTSPlayer(int color, std::string name, float weight_c, 
-                                   int compute_budget, bool silent)
+                                   int compute_budget, double time_budget, bool silent)
     :Player(color, name), 
-    search_tree(Ppc1_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+    search_tree(Ppc1_MonteCarloSearchTree(weight_c, compute_budget, time_budget, compute_budget/100, 
                                          silent, 1000, MCTS_Expand_policy_fn,
                                          rollout_policy_fn)) {
         this->silent = silent;

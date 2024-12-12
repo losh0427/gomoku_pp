@@ -22,7 +22,7 @@ namespace gomoku
     // ppc1 part
     Ppc1_MonteCarloSearchTree::Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget,
                                                        int expand_bound, bool silent, int rollout_limit,
-                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn) {
+                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn, bool DEBUG) {
         root = new MCTSTreeNode(nullptr, 1.0);
         this->weight_c = weight_c;
         this->compute_budget = compute_budget;
@@ -32,6 +32,7 @@ namespace gomoku
         this->rollout_limit = rollout_limit;
         this->expand_func = expand_fn;
         this->rollout_func = rollout_fn;
+        this->DEBUG = DEBUG;
     }
 
     void Ppc1_MonteCarloSearchTree::reset() {
@@ -157,8 +158,12 @@ namespace gomoku
         // }
         double think_end = getTimeStamp();
         avg_iter /= num_threads;
-        printf("PPC1 Thinking time: %f\n", think_end - think_start);
-        printf("PPC1 Iteration count(average): %d\n", avg_iter);
+        if (!silent) {
+            printf("PPC1 Thinking time: %f\n", think_end - think_start);
+            printf("PPC1 Iteration count(average): %d\n", avg_iter);
+        }
+        // printf("PPC1 Thinking time: %f\n", think_end - think_start);
+        // printf("PPC1 Iteration count(average): %d\n", avg_iter);
 
         if (DEBUG) {
             std::vector<MoveProbPair> debug_output_vec;

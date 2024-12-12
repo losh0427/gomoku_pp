@@ -6,9 +6,7 @@
 #include <limits>
 #include <omp.h>
 #include "cppgomoku/common.h"
-#if DEBUG == 1
 #include <algorithm>
-#endif
 #include "cppgomoku/board.h"
 #include "cppgomoku/policy_functions.h"
 
@@ -73,13 +71,14 @@ namespace gomoku
         int rollout_limit;
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
+        bool DEBUG;
     
     public:
         PureMonteCarloSearchTree(){}
         PureMonteCarloSearchTree(float weight_c, int compute_budget, 
                                  int expand_bound, float time_budget, bool silent, 
                                  int rollout_limit, expandFunc *expand_fn,
-                                 rolloutFunc *rollout_fn);
+                                 rolloutFunc *rollout_fn, bool DEBUG);
         ~PureMonteCarloSearchTree() {delete root;}
         void reset();
         float evaluateRollout(Board &board, int limit);
@@ -104,13 +103,14 @@ namespace gomoku
         int rollout_limit;
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
+        bool DEBUG;
     
     public:
         Ppc1_MonteCarloSearchTree(){}
         Ppc1_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget,
                                  int expand_bound, bool silent, 
                                  int rollout_limit, expandFunc *expand_fn,
-                                 rolloutFunc *rollout_fn);
+                                 rolloutFunc *rollout_fn, bool DEBUG);
         ~Ppc1_MonteCarloSearchTree() {delete root;}
         void reset();
         float evaluateRollout(Board &board, int limit);
@@ -129,17 +129,19 @@ namespace gomoku
         float weight_c;
         int compute_budget;
         bool silent;
+        double time_budget;
         int expand_bound;
         int rollout_limit;
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
+        bool DEBUG;
     
     public:
         Ppc2_MonteCarloSearchTree(){}
-        Ppc2_MonteCarloSearchTree(float weight_c, int compute_budget, 
+        Ppc2_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget, 
                                  int expand_bound, bool silent, 
                                  int rollout_limit, expandFunc *expand_fn,
-                                 rolloutFunc *rollout_fn);
+                                 rolloutFunc *rollout_fn, bool DEBUG);
         ~Ppc2_MonteCarloSearchTree() {delete root;}
         void reset();
         float evaluateRollout(Board &board, int limit);
@@ -156,18 +158,21 @@ namespace gomoku
         MCTSTreeNode * root;
         float weight_c;
         int compute_budget;
+        double time_budget;
         bool silent;
         int expand_bound;
         int rollout_limit;
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
+        bool DEBUG;
+
     
     public:
         Ppc3_MonteCarloSearchTree(){}
-        Ppc3_MonteCarloSearchTree(float weight_c, int compute_budget, 
+        Ppc3_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget, 
                                  int expand_bound, bool silent, 
                                  int rollout_limit, expandFunc *expand_fn,
-                                 rolloutFunc *rollout_fn);
+                                 rolloutFunc *rollout_fn, bool DEBUG);
         ~Ppc3_MonteCarloSearchTree() {delete root;}
         void reset();
         float evaluateRollout(Board &board, int limit);

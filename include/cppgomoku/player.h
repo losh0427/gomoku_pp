@@ -46,7 +46,7 @@ namespace gomoku
         PureMonteCarloSearchTree search_tree;
     public:
         PureMCTSPlayer(int color, std::string name="Pure MCTS player", float weight_c=10, 
-                       int compute_budget=1E4, float time_budget = 5.0,bool silent=false);
+                       int compute_budget=1E4, float time_budget = 5.0,bool silent=false, bool DEBUG=false);
         ~PureMCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);
@@ -62,7 +62,7 @@ namespace gomoku
         Ppc1_MonteCarloSearchTree search_tree;
     public:
         Ppc1_MCTSPlayer(int color, std::string name="Ppc1_MCTSPlayer", float weight_c=10, 
-                       int compute_budget=1E4, double time_budget = 5.0, bool silent=false);
+                       int compute_budget=1E4, double time_budget = 5.0, bool silent=false, bool DEBUG=false);
         ~Ppc1_MCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);
@@ -77,7 +77,7 @@ namespace gomoku
         Ppc2_MonteCarloSearchTree search_tree;
     public:
         Ppc2_MCTSPlayer(int color, std::string name="Ppc2_MCTSPlayer", float weight_c=10, 
-                       int compute_budget=1E4, bool silent=false);
+                       int compute_budget=1E4, double time_budget = 5.0, bool silent=false, bool DEBUG=false);
         ~Ppc2_MCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);
@@ -91,7 +91,7 @@ namespace gomoku
         Ppc3_MonteCarloSearchTree search_tree;
     public:
         Ppc3_MCTSPlayer(int color, std::string name="Ppc3_MCTSPlayer", float weight_c=10, 
-                       int compute_budget=1E4, bool silent=false);
+                       int compute_budget=1E4, double time_budget = 5.0, bool silent=false, bool DEBUG=false);
         ~Ppc3_MCTSPlayer(){}
         void reset() {search_tree.reset();}
         int getAction(Board &board);

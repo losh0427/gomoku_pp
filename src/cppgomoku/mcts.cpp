@@ -95,7 +95,7 @@ namespace gomoku
 
     PureMonteCarloSearchTree::PureMonteCarloSearchTree(float weight_c, int compute_budget,
                                                        int expand_bound,float time_budget, bool silent, int rollout_limit,
-                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn) {
+                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn, bool DEBUG) {
         root = new MCTSTreeNode(nullptr, 1.0);
         this->weight_c = weight_c;
         this->compute_budget = compute_budget;
@@ -105,6 +105,7 @@ namespace gomoku
         this->expand_func = expand_fn;
         this->rollout_func = rollout_fn;
         this->time_budget = time_budget;
+        this->DEBUG = DEBUG;
     }
 
     void PureMonteCarloSearchTree::reset() {
@@ -173,10 +174,12 @@ namespace gomoku
             it_count++;
         }
 
-
-        printf("Thinking time: %f\n", think_end - think_start);
-        printf("Iteration count: %d\n", it_count);
-
+        if (!silent){
+            printf("Thinking time: %f\n", think_end - think_start);
+            printf("Iteration count: %d\n", it_count);
+        }
+        // printf("Thinking time: %f\n", think_end - think_start);
+        // printf("Iteration count: %d\n", it_count);
         if (DEBUG) {
             std::vector<MoveProbPair> debug_output_vec;
             for (auto i: root->children) {

@@ -92,11 +92,11 @@ namespace gomoku
 
 
     PureMCTSPlayer::PureMCTSPlayer(int color, std::string name, float weight_c, 
-                                   int compute_budget,float time_budget, bool silent)
+                                   int compute_budget,float time_budget, bool silent, bool DEBUG)
     :Player(color, name), 
     search_tree(PureMonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, time_budget, 
                                          silent, 1000, MCTS_Expand_policy_fn,
-                                         rollout_policy_fn)) {
+                                         rollout_policy_fn, DEBUG)) {
         this->silent = silent;
     }
 
@@ -109,9 +109,11 @@ namespace gomoku
 
         // update the MCST with last move, because we only use 
         // PureMCTSPlayer to play with others, not itself.
-        printf("Update with move\n");
+        if (!silent) printf("Update with move\n");
+        // printf("Update with move\n");
         search_tree.updateWithMove(b.lastMove());
-        printf("get move\n");
+        if (!silent) printf("get move\n");
+        // printf("get move\n");
         // get next move
         int next_move = search_tree.getMove(b);
         search_tree.updateWithMove(next_move);
@@ -143,11 +145,11 @@ namespace gomoku
 
     // ppc1 part
     Ppc1_MCTSPlayer::Ppc1_MCTSPlayer(int color, std::string name, float weight_c, 
-                                   int compute_budget, double time_budget, bool silent)
+                                   int compute_budget, double time_budget, bool silent, bool DEBUG)
     :Player(color, name), 
     search_tree(Ppc1_MonteCarloSearchTree(weight_c, compute_budget, time_budget, compute_budget/100, 
                                          silent, 1000, MCTS_Expand_policy_fn,
-                                         rollout_policy_fn)) {
+                                         rollout_policy_fn, DEBUG)) {
         this->silent = silent;
     }
 
@@ -160,9 +162,11 @@ namespace gomoku
 
         // update the MCST with last move, because we only use 
         // Ppc1_MCTSPlayer to play with others, not itself.
-        printf("Update with move\n");
+        if (!silent) printf("Update with move\n");
+        // printf("Update with move\n");
         search_tree.updateWithMove(b.lastMove());
-        printf("get move\n");
+        if (!silent) printf("get move\n");
+        // printf("get move\n");
         // get next move
         int next_move = search_tree.getMove(b);
         search_tree.updateWithMove(next_move);
@@ -193,11 +197,11 @@ namespace gomoku
     }
     // ppc2 part
     Ppc2_MCTSPlayer::Ppc2_MCTSPlayer(int color, std::string name, float weight_c, 
-                                   int compute_budget, bool silent)
+                                   int compute_budget, double time_budget, bool silent, bool DEBUG)
     :Player(color, name), 
-    search_tree(Ppc2_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+    search_tree(Ppc2_MonteCarloSearchTree(weight_c, compute_budget, time_budget, compute_budget/100,
                                          silent, 1000, MCTS_Expand_policy_fn,
-                                         rollout_policy_fn)) {
+                                         rollout_policy_fn, DEBUG)) {
         this->silent = silent;
     }
 
@@ -210,9 +214,11 @@ namespace gomoku
 
         // update the MCST with last move, because we only use 
         // Ppc2_MCTSPlayer to play with others, not itself.
-        printf("Update with move\n");
+        if (!silent) printf("Update with move\n");
+        // printf("Update with move\n");
         search_tree.updateWithMove(b.lastMove());
-        printf("get move\n");
+        if (!silent) printf("get move\n");
+        // printf("get move\n");
         // get next move
         int next_move = search_tree.getMove(b);
         search_tree.updateWithMove(next_move);
@@ -243,11 +249,11 @@ namespace gomoku
     }
     // ppc3 part
     Ppc3_MCTSPlayer::Ppc3_MCTSPlayer(int color, std::string name, float weight_c, 
-                                   int compute_budget, bool silent)
+                                   int compute_budget, double time_budget, bool silent, bool DEBUG)
     :Player(color, name), 
-    search_tree(Ppc3_MonteCarloSearchTree(weight_c, compute_budget, compute_budget/100, 
+    search_tree(Ppc3_MonteCarloSearchTree(weight_c, compute_budget, time_budget, compute_budget/100,  
                                          silent, 1000, MCTS_Expand_policy_fn,
-                                         rollout_policy_fn)) {
+                                         rollout_policy_fn, DEBUG)) {
         this->silent = silent;
     }
 

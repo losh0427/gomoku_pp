@@ -40,20 +40,24 @@ namespace gomoku
         int next_move, winner_color = Board::kPlayerEmpty;
         while (true) {
             Player *current_player = color_to_player[board->currentPlayerColor()];
-            printf("Before get action\n");
+            if (mode != 2){
+                printf("Before get action\n");
+            }
             next_move = current_player->getAction(*board);
-            printf("After get action\n");
+            if (mode != 2){
+                printf("After get action\n");
+            }
             if (!board->isValidMove(next_move)) {
                 printf("Invalid move %d\n", next_move);
                 throw std::runtime_error("Invalid move!");
             }
             board->play(next_move);
-            // [debug]show mMoved
-            std::vector<int> moves = board->getmMoved();
-            for (int i = 0; i < moves.size(); ++i) {
-                printf("%d ", moves[i]);
-            }
-            printf("\n");
+            // // [debug]show mMoved
+            // std::vector<int> moves = board->getmMoved();
+            // for (int i = 0; i < moves.size(); ++i) {
+            //     printf("%d ", moves[i]);
+            // }
+            // printf("\n");
 
             if (!silent) showGameInfo();
             bool is_end = board->gameEnd(winner_color);

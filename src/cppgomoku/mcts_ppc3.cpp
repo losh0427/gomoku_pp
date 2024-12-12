@@ -5,9 +5,9 @@ namespace gomoku
 {
 
     //ppc3 part
-    Ppc3_MonteCarloSearchTree::Ppc3_MonteCarloSearchTree(float weight_c, int compute_budget,
+    Ppc3_MonteCarloSearchTree::Ppc3_MonteCarloSearchTree(float weight_c, int compute_budget, double time_budget,
                                                        int expand_bound, bool silent, int rollout_limit,
-                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn) {
+                                                       expandFunc *expand_fn, rolloutFunc *rollout_fn, bool DEBUG) {
         root = new MCTSTreeNode(nullptr, 1.0);
         this->weight_c = weight_c;
         this->compute_budget = compute_budget;
@@ -16,6 +16,8 @@ namespace gomoku
         this->rollout_limit = rollout_limit;
         this->expand_func = expand_fn;
         this->rollout_func = rollout_fn;
+        this->time_budget = time_budget;
+        this->DEBUG = DEBUG;
     }
 
     void Ppc3_MonteCarloSearchTree::reset() {

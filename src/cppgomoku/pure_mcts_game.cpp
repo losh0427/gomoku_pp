@@ -109,7 +109,7 @@ void board_mode(Player* player1, Player* player2, const string& filepath, int st
     }
 }
 
-
+int thd_num = 1;
 
 int main(int argc, char *argv[]) {
     if (argc < 2) {
@@ -119,6 +119,12 @@ int main(int argc, char *argv[]) {
     // DEBUG = 0;
     string mode = argv[1];
     // 1 - normal, 2 - auto, 3 - board
+    
+    char **thd_arg_pos = find(argv, argv + argc, string("-c"));
+    if(thd_arg_pos != (argv + argc)) {
+        thd_num = atoi(*(thd_arg_pos + 1));
+    }
+    printf("thd_num = %d\n", thd_num);
 
     if (mode == "1") {
         if (argc < 4) {

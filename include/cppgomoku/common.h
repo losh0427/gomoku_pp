@@ -8,6 +8,7 @@
 #include <random>
 #include <cmath>
 
+extern int thd_num;
 // #define DEBUG 0
 
 namespace gomoku

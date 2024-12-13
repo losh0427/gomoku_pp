@@ -7,7 +7,7 @@
 using namespace std;
 using namespace gomoku;
 
-bool define_player(Player *&p, string& type, int color, double time_budget = 1.0,bool silent = false, bool DEBUG = false) {
+bool define_player(Player *&p, string& type, int color, double time_budget = 2.0,bool silent = false, bool DEBUG = false) {
     // human player : "h", computer player : "c", pp1 : "p1", pp2 : "p2", pp3 : "p3"
     if (type == "p1") {
         p = new Ppc1_MCTSPlayer(color, "Ppc1 MCTS player", 10.0, 80000, time_budget, silent, DEBUG); 

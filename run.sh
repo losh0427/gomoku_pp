@@ -20,7 +20,7 @@ done
 
 echo "MODE is: $MODE"
 if [ "$MODE" = "1" ]; then
-    ./bin/cppgomoku/pure_mcts_game 1 c p1 ${THD_NUM}
+    ./bin/cppgomoku/pure_mcts_game 1 c p2 ${THD_NUM}
 ## mode 2:
 ## ./exe 2 [player1] [player2] [iter_time]
 elif [ "$MODE" = "2" ]; then

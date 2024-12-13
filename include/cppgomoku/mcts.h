@@ -47,6 +47,8 @@ namespace gomoku
         bool isLeaf() {return children.empty();}
         bool isRoot() {return parent == nullptr;}
         float getQValue() {return Q_value;}
+
+        MCTSTreeNode *copyTree(const MCTSTreeNode *src);
     };
 
     class MonteCarloSearchTreeBase {
@@ -92,6 +94,9 @@ namespace gomoku
     };
 
     // pp part
+    class Ppc1_MonteCarloSearchTree;
+    class Ppc2_MonteCarloSearchTree;
+    
     class Ppc1_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
     private:
         MCTSTreeNode * root;
@@ -123,13 +128,22 @@ namespace gomoku
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
     };
+
+    typedef struct ThreadData{
+        int iter;
+        Board *global_board;
+        Board *local_board;
+        MCTSTreeNode *local_root;
+        Ppc2_MonteCarloSearchTree *_this;
+    } thread_data;
+
     class Ppc2_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
     private:
         MCTSTreeNode * root;
         float weight_c;
         int compute_budget;
-        bool silent;
         double time_budget;
+        bool silent;
         int expand_bound;
         int rollout_limit;
         expandFunc *expand_func;
@@ -152,6 +166,10 @@ namespace gomoku
         void setSilent() {silent = true;}
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
+        double getTimeBudget() {return time_budget;}
+
+        static void *loopPlayoutLocal(void *arguments);
+        static void playoutLocal(thread_data *t_data);
     };
     class Ppc3_MonteCarloSearchTree : public MonteCarloSearchTreeBase {
     private:

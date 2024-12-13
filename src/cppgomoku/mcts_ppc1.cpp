@@ -1,10 +1,9 @@
 #include "cppgomoku/mcts.h"
-// bool checked = false;
 #include "cppgomoku/common.h"
 
 namespace gomoku
 {
-    MCTSTreeNode *copyTree(const MCTSTreeNode *src) {
+    MCTSTreeNode *MCTSTreeNode::copyTree(const MCTSTreeNode *src) {
         MCTSTreeNode *new_node = new MCTSTreeNode(nullptr, src->probability);
         new_node->Q_value = src->Q_value;
         new_node->visit_times = src->visit_times;
@@ -126,7 +125,7 @@ namespace gomoku
         #pragma omp parallel num_threads(num_threads)
         {
             int tid = omp_get_thread_num();
-            MCTSTreeNode *local_root = copyTree(root);
+            MCTSTreeNode *local_root = root->copyTree(root);
             Board local_board(s);
 
             // for (int i = 0; i < compute_budget; ++i) {

@@ -52,12 +52,12 @@ namespace gomoku
                 throw std::runtime_error("Invalid move!");
             }
             board->play(next_move);
-            // // [debug]show mMoved
-            // std::vector<int> moves = board->getmMoved();
-            // for (int i = 0; i < moves.size(); ++i) {
-            //     printf("%d ", moves[i]);
-            // }
-            // printf("\n");
+            // [debug]show mMoved
+            std::vector<int> moves = board->getmMoved();
+            for (int i = 0; i < moves.size(); ++i) {
+                printf("%d ", moves[i]);
+            }
+            printf("\n");
 
             if (!silent) showGameInfo();
             bool is_end = board->gameEnd(winner_color);

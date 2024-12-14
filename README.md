@@ -33,18 +33,19 @@ There are several types of players supported in the game:
 - **c**: Pure MCTS Player  
   A computer player that uses the Monte Carlo Tree Search (MCTS) algorithm without parallelization.
 - **p1**: OpenMP MCTS Player  
-  A computer player leveraging POSIX threads (pthreads) to parallelize the MCTS algorithm.
-- **p2**: Pthread MCTS Player  
   A computer player utilizing OpenMP to achieve parallelized MCTS computations.
-- **p3**: MPI MCTS Player  
-  A computer player designed for distributed computing, using MPI (Message Passing Interface) to run MCTS across multiple processes.
+- **p2**: Pthread MCTS Player  
+  A computer player leveraging POSIX threads (pthreads) to parallelize the MCTS algorithm.
 
 #### How to Execute
 
 1. **Quick Demo (Computer vs. Computer)**  
    To see an immediate demonstration where two computer players compete against each other:
    ```bash
-   ./run.sh
+  bash ./run.sh 1 -c 2
+  bash ./run.sh 2 -c 2
+  bash ./run.sh 3 
+
    ```
 
 2. **Detailed Demo (Custom Player Setup)**  
@@ -52,12 +53,14 @@ There are several types of players supported in the game:
    ```bash
    ./bin/cppgomoku/pure_mcts_game (player1) (player2)
    ```
-   Replace `(player1)` and `(player2)` with the respective player types (e.g., `h`, `c`, `p1`, `p2`, `p3`).  
+   Replace `(player1)` and `(player2)` with the respective player types (e.g., `h`, `c`, `p1`, `p2`).  
    Example:
    ```bash
-   ./bin/cppgomoku/pure_mcts_game h c
+   ./bin/cppgomoku/pure_mcts_game 1 c p1 -c 2
+   ./bin/cppgomoku/pure_mcts_game 2 c p1 5 -c 2
+   ./bin/cppgomoku/pure_mcts_game 3 0 p1 p1 ./testcase/03.txt -c 2
+   
    ```
-   This command starts a game between a Human Player and a Pure MCTS Player.
 
 ---
 

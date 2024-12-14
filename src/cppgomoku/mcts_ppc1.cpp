@@ -32,6 +32,7 @@ namespace gomoku
         this->expand_func = expand_fn;
         this->rollout_func = rollout_fn;
         this->DEBUG = DEBUG;
+        this->iter_count = std::vector<int>();
     }
 
     void Ppc1_MonteCarloSearchTree::reset() {
@@ -157,6 +158,7 @@ namespace gomoku
         // }
         double think_end = getTimeStamp();
         // avg_iter /= num_threads;
+        iter_count.push_back(avg_iter);
         if (!silent) {
             printf("PPC1 Thinking time: %f\n", think_end - think_start);
             // printf("PPC1 Iteration count(average): %d\n", avg_iter);

@@ -4,10 +4,11 @@
 #include "cppgomoku/game_server.h"
 #include <fstream>
 #include <iostream>
+#include <filesystem>
 using namespace std;
 using namespace gomoku;
 
-bool define_player(Player *&p, string& type, int color, double time_budget = 2.0,bool silent = false, bool DEBUG = false) {
+bool define_player(Player *&p, string& type, int color, double time_budget = 5.0,bool silent = false, bool DEBUG = false) {
     // human player : "h", computer player : "c", pp1 : "p1", pp2 : "p2", pp3 : "p3"
     if (type == "p1") {
         p = new Ppc1_MCTSPlayer(color, "Ppc1 MCTS player", 10.0, 80000, time_budget, silent, DEBUG); 
@@ -95,11 +96,12 @@ void board_mode(Player* player1, Player* player2, const string& filepath, int st
 
     file.close();
 
-    GameServer gs(&board, player1, player2, stop_after_one == 0);
+    GameServer gs(&board, player1, player2, false);
     if (stop_after_one == 0) {
         // printf("Probability distribution (DEBUG = 1):\n");
         // Add probability distribution display here if applicable
         // DEBUG = 1;
+
         int winner = gs.startGame(3, 0);
         printf("Move result: %s\n", (winner == Board::kPlayerWhite ? "White wins" : winner == Board::kPlayerBlack ? "Black wins" : "No result"));
         // show Probability distribution
@@ -144,13 +146,50 @@ int main(int argc, char *argv[]) {
         GameServer gs(&b, player1, player2, false);
         int winner = gs.startGame(1,0);
         // // show getmMoved
-        // vector<int> moves = b.getmMoved();
-        // for (int i = 0; i < moves.size(); ++i) {
-        //     cout << moves[i] << " ";
-        // }
+        vector<int> moves = b.getmMoved();
+        for (int i = 0; i < moves.size(); ++i) {
+            cout << moves[i] << " ";
+        }        
         printf("Move result: %s\n", (winner == Board::kPlayerWhite ? "White wins" : winner == Board::kPlayerBlack ? "Black wins" : "No result"));
+        std::string exp_folder = "./result/";
+        if (player1_type != "h") {
+            auto iter_count1 = player1->getIterCount();
+            std::cout << "iter_count1: ";
+            for (int i = 0; i < iter_count1.size(); ++i) {
+                std::cout << iter_count1[i] << " ";
+            }
+            std::cout << std::endl;
+            std::filesystem::create_directories(exp_folder);
+            std::ofstream out(exp_folder + player1_type + ".txt", std::ios::app);
+            if (!out) {
+                std::cerr << "Error: Unable to open file " << exp_folder + player1_type + ".txt" << std::endl;
+                return 0;
+            }
 
+            for (int i = 0; i < iter_count1.size(); ++i) {
+                out << iter_count1[i] << " ";
+            }
+            out.close();
+        }
 
+        if (player2_type != "h") {
+            auto iter_count2 = player2->getIterCount();
+            std::cout << "iter_count2: ";
+            for (int i = 0; i < iter_count2.size(); ++i) {
+                std::cout << iter_count2[i] << " ";
+            }
+            std::cout << std::endl;
+            std::filesystem::create_directories(exp_folder);
+            std::ofstream out(exp_folder + player2_type + ".txt", std::ios::app);
+            if (!out) {
+                std::cerr << "Error: Unable to open file " << exp_folder + player2_type + ".txt" << std::endl;
+                return 0;
+            }
+            for (int i = 0; i < iter_count2.size(); ++i) {
+                out << iter_count2[i] << " ";
+            }
+            out.close();
+        }
 
 
         delete player1;

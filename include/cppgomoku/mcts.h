@@ -74,6 +74,7 @@ namespace gomoku
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
         bool DEBUG;
+        std::vector<int> iter_count;
     
     public:
         PureMonteCarloSearchTree(){}
@@ -91,6 +92,7 @@ namespace gomoku
         void setSilent() {silent = true;}
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
+        std::vector<int>& getIterCount() {return iter_count;}
     };
 
     // pp part
@@ -109,6 +111,8 @@ namespace gomoku
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
         bool DEBUG;
+        std::vector<int> iter_count;
+
     
     public:
         Ppc1_MonteCarloSearchTree(){}
@@ -127,6 +131,7 @@ namespace gomoku
         void setSilent() {silent = true;}
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
+        std::vector<int>& getIterCount() {return iter_count;}
     };
 
     typedef struct ThreadData{
@@ -149,6 +154,8 @@ namespace gomoku
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
         bool DEBUG;
+        std::vector<int> iter_count;
+
     
     public:
         Ppc2_MonteCarloSearchTree(){}
@@ -167,6 +174,7 @@ namespace gomoku
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
         double getTimeBudget() {return time_budget;}
+        std::vector<int>& getIterCount() {return iter_count;}
 
         static void *loopPlayoutLocal(void *arguments);
         static void playoutLocal(thread_data *t_data);
@@ -183,6 +191,7 @@ namespace gomoku
         expandFunc *expand_func;
         rolloutFunc *rollout_func;
         bool DEBUG;
+        std::vector<int> iter_count;
 
     
     public:
@@ -201,6 +210,7 @@ namespace gomoku
         void setSilent() {silent = true;}
         void unsetSilent() {silent = false;}
         int getComputeBudget() {return compute_budget;}
+        std::vector<int>& getIterCount() {return iter_count;}
     };
 
 

@@ -18,6 +18,7 @@ namespace gomoku
         this->rollout_func = rollout_fn;
         this->time_budget = time_budget;
         this->DEBUG = DEBUG;
+        this->iter_count = std::vector<int>();
     }
 
     void Ppc3_MonteCarloSearchTree::reset() {

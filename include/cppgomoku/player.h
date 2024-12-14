@@ -26,11 +26,13 @@ namespace gomoku
         void setColor(int color) {this->color = color;}
         std::string getName() {return name;}
         void setName(std::string name) {this->name = name;}
+        virtual std::vector<int>& getIterCount() = 0;
     };
 
     class HumanPlayer : public Player {
     private:
         HumanPlayerInputMode input_mode;
+        std::vector<int> iter_count;
     public:
         HumanPlayer(int color, std::string name="John Doe(Human)", char input_mode='S');
         ~HumanPlayer(){}
@@ -38,6 +40,7 @@ namespace gomoku
         int getActionFromStdin(Board &board);
         int getAction(Board &board);
         std::string PlayerInfo();
+        std::vector<int>& getIterCount() {return iter_count;}
     };
 
     class PureMCTSPlayer : public Player {
@@ -53,6 +56,7 @@ namespace gomoku
         std::string PlayerInfo();
         void setSilent() {silent = true; search_tree.setSilent();}
         void unsetSilent() {silent = false; search_tree.unsetSilent();}
+        std::vector<int>& getIterCount() {return search_tree.getIterCount();}
     };
     
     // pp part 
@@ -69,6 +73,7 @@ namespace gomoku
         std::string PlayerInfo();
         void setSilent() {silent = true; search_tree.setSilent();}
         void unsetSilent() {silent = false; search_tree.unsetSilent();}
+        std::vector<int>& getIterCount() {return search_tree.getIterCount();}
     };
 
     class Ppc2_MCTSPlayer : public Player {
@@ -84,6 +89,8 @@ namespace gomoku
         std::string PlayerInfo();
         void setSilent() {silent = true; search_tree.setSilent();}
         void unsetSilent() {silent = false; search_tree.unsetSilent();}
+        std::vector<int>& getIterCount() {return search_tree.getIterCount();}
+
     };
     class Ppc3_MCTSPlayer : public Player {
     private:
@@ -98,6 +105,7 @@ namespace gomoku
         std::string PlayerInfo();
         void setSilent() {silent = true; search_tree.setSilent();}
         void unsetSilent() {silent = false; search_tree.unsetSilent();}
+        std::vector<int>& getIterCount() {return search_tree.getIterCount();}
     };
     
 

@@ -106,6 +106,7 @@ namespace gomoku
         this->rollout_func = rollout_fn;
         this->time_budget = time_budget;
         this->DEBUG = DEBUG;
+        this->iter_count = std::vector<int>();
     }
 
     void PureMonteCarloSearchTree::reset() {
@@ -173,7 +174,7 @@ namespace gomoku
             think_end = getTimeStamp(); 
             it_count++;
         }
-
+        iter_count.push_back(it_count);
         if (!silent){
             printf("Thinking time: %f\n", think_end - think_start);
             printf("Iteration count: %d\n", it_count);

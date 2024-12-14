@@ -156,10 +156,11 @@ namespace gomoku
         //     playout(board_for_search);
         // }
         double think_end = getTimeStamp();
-        avg_iter /= num_threads;
+        // avg_iter /= num_threads;
         if (!silent) {
             printf("PPC1 Thinking time: %f\n", think_end - think_start);
-            printf("PPC1 Iteration count(average): %d\n", avg_iter);
+            // printf("PPC1 Iteration count(average): %d\n", avg_iter);
+            printf("PPC1 Iteration count(total): %d\n", avg_iter);
         }
         // printf("PPC1 Thinking time: %f\n", think_end - think_start);
         // printf("PPC1 Iteration count(average): %d\n", avg_iter);

@@ -143,10 +143,11 @@ namespace gomoku
             printf("tid %d iteration: %d\n", t, t_datas[t].iter);
             avg_iter += t_datas[t].iter;
         }
-        avg_iter /= ncpus;
+        // avg_iter /= ncpus;
         if(!silent) {
             printf("PPC2 Thinking time: %f\n", think_end - think_start);
-            printf("PPC2 Iteration count(average): %d\n", avg_iter);
+            // printf("PPC2 Iteration count(average): %d\n", avg_iter);
+            printf("PPC2 Iteration count(total): %d\n", avg_iter);
         }
 
         if (DEBUG) {

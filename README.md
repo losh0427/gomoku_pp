@@ -40,13 +40,12 @@ There are several types of players supported in the game:
 #### How to Execute
 
 1. **Quick Demo (Computer vs. Computer)**  
-   To see an immediate demonstration where two computer players compete against each other:
-   ```bash
+  To see an immediate demonstration where two computer players compete against each other:
+  ```bash
   bash ./run.sh 1 -c 2
   bash ./run.sh 2 -c 2
   bash ./run.sh 3 
-
-   ```
+  ```
 
 2. **Detailed Demo (Custom Player Setup)**  
    For more control over the game setup, you can run the executable directly:

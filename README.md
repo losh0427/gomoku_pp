@@ -1,4 +1,4 @@
-# gomoku_pp
+# Parallel MCTS Gomoku with Multi-Threading Comparison
 #### pp24_final_project ####
 
 ## Introduction

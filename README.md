@@ -1,17 +1,9 @@
 # gomoku_pp
-#### pp24_final ####
+#### pp24_final_project ####
 
 ## Introduction
 A game demo that explores advancements in parallel computing techniques applied to the game of Gomoku. This project demonstrates different parallelization strategies for computer players, showcasing performance and decision-making improvements.
 
-### Game
-To be continued.
-
-### Human Player
-To be continued.
-
-### Computer Player
-To be continued.
 
 ---
 
